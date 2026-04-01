@@ -1,0 +1,21 @@
+{
+  "name": "vivo-heart-rate-viewer",
+  "version": "1.0.0",
+  "description": "Real-time heart rate monitoring for VIVO watch BLE broadcasts",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx http-server -p 8080 -c-1",
+    "dev": "npx http-server -p 8080"
+  },
+  "keywords": [
+    "ble",
+    "heart-rate",
+    "vivo",
+    "wearables"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.1"
+  }
+}

@@ -36,6 +36,14 @@
                 </div>
             </div>
 
+            <div class="ibi-display">
+                <div class="ibi-value">
+                    <span id="ibiValue">--</span>
+                    <span class="unit">ms</span>
+                </div>
+                <div class="ibi-label">心跳间隔 (IBI)</div>
+            </div>
+
             <div class="chart-container">
                 <canvas id="heartRateChart"></canvas>
             </div>
@@ -70,6 +78,7 @@
     <script src="ble-manager.js"></script>
     <script src="heart-rate-display.js"></script>
     <script src="chart-manager.js"></script>
+    <script src="ibi-converter.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

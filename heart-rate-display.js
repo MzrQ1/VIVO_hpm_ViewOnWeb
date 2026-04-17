@@ -1,14 +1,17 @@
 class HeartRateDisplay {
     constructor() {
         this.heartRateElement = document.getElementById('heartRate');
+        this.ibiValueElement = document.getElementById('ibiValue');
         this.deviceNameElement = document.getElementById('deviceName');
         this.signalStrengthElement = document.getElementById('signalStrength');
         this.connectionStateElement = document.getElementById('connectionState');
         this.packetCountElement = document.getElementById('packetCount');
         this.heartBeatElement = document.getElementById('heartBeat');
         this.heartRate = null;
+        this.ibiValue = null;
         this.lastHeartBeatTime = 0;
         this.heartRateHistory = [];
+        this.ibiHistory = [];
         this.maxHistorySize = 30;
     }
 
@@ -24,6 +27,10 @@ class HeartRateDisplay {
     setupEventListeners() {
         document.addEventListener('heartRateChanged', (e) => {
             this.handleHeartRateUpdate(e.detail);
+        });
+
+        document.addEventListener('ibiChanged', (e) => {
+            this.handleIBIUpdate(e.detail);
         });
 
         document.addEventListener('connectionStatusChanged', (e) => {
@@ -60,6 +67,22 @@ class HeartRateDisplay {
         document.dispatchEvent(event);
     }
 
+    handleIBIUpdate(data) {
+        this.ibiValue = data.ibi;
+        this.ibiHistory.push(this.ibiValue);
+
+        if (this.ibiHistory.length > this.maxHistorySize) {
+            this.ibiHistory.shift();
+        }
+
+        this.updateIBIUI(this.ibiValue);
+
+        const event = new CustomEvent('ibiUpdated', {
+            detail: { ibi: this.ibiValue, history: this.ibiHistory }
+        });
+        document.dispatchEvent(event);
+    }
+
     handleConnectionStatusChange(detail) {
         this.updateConnectionState(detail.connected ? '已连接' : '未连接');
     }
@@ -71,6 +94,16 @@ class HeartRateDisplay {
         } else {
             this.heartRateElement.textContent = heartRate;
             this.heartRateElement.style.color = this.getHeartRateColor(heartRate);
+        }
+    }
+
+    updateIBIUI(ibi) {
+        if (ibi === null || ibi === undefined) {
+            this.ibiValueElement.textContent = '--';
+            this.ibiValueElement.style.color = '#a0a0a0';
+        } else {
+            this.ibiValueElement.textContent = ibi;
+            this.ibiValueElement.style.color = '#70a1ff';
         }
     }
 
@@ -119,8 +152,11 @@ class HeartRateDisplay {
 
     reset() {
         this.heartRate = null;
+        this.ibiValue = null;
         this.heartRateHistory = [];
+        this.ibiHistory = [];
         this.updateHeartRateUI(null);
+        this.updateIBIUI(null);
         this.updateDeviceName('--');
         this.updateSignalStrength('--');
     }

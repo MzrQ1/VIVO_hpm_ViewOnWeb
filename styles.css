@@ -148,17 +148,18 @@ header h1 {
 
 @media (min-width: 768px) {
     .main-content {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 300px 300px 1fr;
     }
 }
 
 @media (min-width: 1024px) {
     .main-content {
-        grid-template-columns: 300px 1fr 250px;
+        grid-template-columns: 300px 300px 1fr 250px;
     }
 }
 
-.heart-rate-display {
+.heart-rate-display,
+.ibi-display {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,10 +171,10 @@ header h1 {
     text-align: center;
 }
 
-.heart-rate-value {
+.heart-rate-value,
+.ibi-value {
     font-size: 5rem;
     font-weight: 700;
-    color: #ff6b6b;
     margin-bottom: 10px;
     display: flex;
     align-items: baseline;
@@ -181,12 +182,22 @@ header h1 {
     gap: 10px;
 }
 
-.heart-rate-value .unit {
+.heart-rate-value {
+    color: #ff6b6b;
+}
+
+.ibi-value {
+    color: #70a1ff;
+}
+
+.heart-rate-value .unit,
+.ibi-value .unit {
     font-size: 1.5rem;
     color: #a0a0a0;
 }
 
-.heart-rate-label {
+.heart-rate-label,
+.ibi-label {
     font-size: 1.2rem;
     color: #a0a0a0;
     margin-bottom: 20px;

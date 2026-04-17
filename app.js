@@ -3,6 +3,7 @@ class App {
         this.bleManager = new BLEManager();
         this.heartRateDisplay = new HeartRateDisplay();
         this.chartManager = new ChartManager();
+        this.ibiConverter = new HeartRateToIBIConverter();
         this.packetCount = 0;
         this.setupEventListeners();
     }
@@ -34,6 +35,10 @@ class App {
 
         this.bleManager.setRSSICallback((rssi) => {
             this.handleRSSIUpdate(rssi);
+        });
+
+        this.ibiConverter.setIBICallback((data) => {
+            this.handleIBIData(data);
         });
     }
 
@@ -96,6 +101,9 @@ class App {
         this.packetCount++;
         this.bleManager.updatePacketCount(this.packetCount);
 
+        // 将心率数据传递给IBI转换器
+        this.ibiConverter.addHeartRateData(data);
+
         const event = new CustomEvent('heartRateChanged', {
             detail: data
         });
@@ -105,6 +113,13 @@ class App {
     handleRSSIUpdate(rssi) {
         const event = new CustomEvent('signalStrengthChanged', {
             detail: { rssi }
+        });
+        document.dispatchEvent(event);
+    }
+
+    handleIBIData(data) {
+        const event = new CustomEvent('ibiChanged', {
+            detail: data
         });
         document.dispatchEvent(event);
     }
@@ -132,6 +147,7 @@ class App {
         this.bleManager.updatePacketCount(0);
         this.heartRateDisplay.reset();
         this.chartManager.reset();
+        this.ibiConverter.reset();
         this.log('界面已重置', 'system');
     }
 
